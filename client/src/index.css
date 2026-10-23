@@ -2,4 +2,90 @@
 
 body {
   @apply bg-slate-100 text-slate-800 antialiased;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* ---------- Color themes (they replace the blue shades) ---------- */
+[data-accent="green"] {
+  --color-blue-100: #d1fae5; --color-blue-600: #059669; --color-blue-700: #047857;
+  --color-blue-800: #065f46; --color-blue-900: #064e3b;
+}
+[data-accent="orange"] {
+  --color-blue-100: #ffedd5; --color-blue-600: #ea580c; --color-blue-700: #c2410c;
+  --color-blue-800: #9a3412; --color-blue-900: #7c2d12;
+}
+[data-accent="purple"] {
+  --color-blue-100: #ede9fe; --color-blue-600: #7c3aed; --color-blue-700: #6d28d9;
+  --color-blue-800: #5b21b6; --color-blue-900: #4c1d95;
+}
+
+/* ---------- Dark mode ---------- */
+.dark {
+  color-scheme: dark;
+  --color-slate-50: #273449; --color-slate-100: #0b1220; --color-slate-200: #334155;
+  --color-slate-300: #475569; --color-slate-500: #94a3b8; --color-slate-600: #cbd5e1;
+  --color-slate-700: #e2e8f0; --color-slate-800: #f1f5f9; --color-slate-900: #f8fafc;
+}
+.dark .bg-white { background-color: #1e293b; }
+.dark .bg-green-50 { background-color: #052e16; }
+.dark .bg-green-100 { background-color: #14532d; }
+.dark .bg-amber-50 { background-color: #451a03; }
+.dark .bg-amber-100 { background-color: #78350f; }
+.dark .bg-red-100 { background-color: #7f1d1d; }
+.dark .text-green-800, .dark .text-green-700 { color: #86efac; }
+.dark .text-amber-900, .dark .text-amber-800 { color: #fde68a; }
+.dark .text-red-800, .dark .text-red-700 { color: #fca5a5; }
+.dark .text-blue-900, .dark .text-blue-800 { color: var(--color-blue-100); }
+
+/* ---------- Animations ---------- */
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes pop { 0% { transform: scale(0.6); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+@keyframes toast-in { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: none; } }
+@keyframes float { 50% { transform: translateY(-10px); } }
+@keyframes fill { from { width: 0; } to { width: 100%; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+@keyframes confetti {
+  0% { transform: translate(0, 0) rotate(0); opacity: 1; }
+  50% { transform: translate(calc(var(--x) * 0.6), var(--y)) rotate(calc(var(--r) * 0.5)); opacity: 1; }
+  100% { transform: translate(var(--x), calc(var(--y) * -0.3 + 140px)) rotate(var(--r)); opacity: 0; }
+}
+
+.page-enter { animation: fade-up 0.4s ease backwards; }
+.pop { animation: pop 0.45s ease backwards; }
+.toast-in { animation: toast-in 0.35s ease; }
+.float { animation: float 2s ease-in-out infinite; }
+.shake { animation: shake 0.4s; }
+.splash-bar { animation: fill 1.4s ease forwards; }
+.draw-circle { stroke-dasharray: 151; stroke-dashoffset: 151; animation: draw 0.6s ease forwards; }
+.draw-check { stroke-dasharray: 40; stroke-dashoffset: 40; animation: draw 0.4s 0.5s ease forwards; }
+.confetti { position: absolute; width: 8px; height: 12px; border-radius: 2px; opacity: 0; animation: confetti 1.4s ease-out forwards; }
+
+.stagger > * { animation: fade-up 0.45s ease backwards; }
+.stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger > *:nth-child(2) { animation-delay: 0.12s; }
+.stagger > *:nth-child(3) { animation-delay: 0.19s; }
+.stagger > *:nth-child(4) { animation-delay: 0.26s; }
+.stagger > *:nth-child(5) { animation-delay: 0.33s; }
+.stagger > *:nth-child(6) { animation-delay: 0.4s; }
+.stagger > *:nth-child(n + 7) { animation-delay: 0.45s; }
+
+.lift { transition: transform 0.2s, box-shadow 0.2s; }
+.lift:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.14); }
+.lift:active { transform: scale(0.97); }
+
+.skeleton { position: relative; overflow: hidden; background: var(--color-slate-200); border-radius: 0.75rem; }
+.skeleton::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  animation: shimmer 1.3s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
